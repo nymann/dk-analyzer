@@ -15,11 +15,9 @@ entry_points.txt
 PKG-INFO
 requires.txt
 src/dk_analyzer/version.py
-SOURCES.txt
-top_level.txt
 __pycache__/
 .coverage
 coverage.xml
 htmlcov
-.idea
 .cache/
+.env
