@@ -1,40 +1,68 @@
 import statistics
 
-import matplotlib.pyplot as plt
+from matplotlib import pyplot
 
 from dk_analyzer.models import Event
 
 
-def plot_graph(events: list[Event]) -> None:
-    hp_list: list[float] = []
-    rp_list: list[float] = []
-    for event in events:
-        if not event.is_cast_by_player():
-            continue
-        hp_list.append(event.hp_percent())
-        rp_list.append(event.rp())
+class Graph:
+    def __init__(self, target_hp_percent: float, target_rp_percent: float) -> None:
+        self.target_hp_percent = target_hp_percent
+        self.target_rp_percent = target_rp_percent
+        self._min_ds_cost = 35
+        self._max_hp_percent = 100
 
-    plt.grid(zorder=-1.0)
-    plt.scatter(
-        x=rp_list,
-        y=hp_list,
-        marker="o",
-        zorder=4.0,
-    )
-    plt.xlabel("RP")
-    plt.ylabel("HP%")
-    add_visual_aid()
-    add_title(hp_list, rp_list)
-    plt.show()
+    def plot(self, events: list[Event]) -> None:
+        hp_list: list[float] = []
+        rp_list: list[float] = []
+        for event in events:
+            if not event.is_cast_by_player():
+                continue
+            hp_list.append(event.hp_percent())
+            rp_list.append(event.rp())
 
+        pyplot.grid(zorder=0)
+        pyplot.scatter(
+            x=rp_list,
+            y=hp_list,
+            marker="o",
+            zorder=4,
+        )
+        pyplot.xlabel("RP")
+        pyplot.ylabel("HP%")
+        self._add_visual_aid()
+        self._add_title(hp_list, rp_list)
+        pyplot.show()
 
-def add_visual_aid():
-    plt.vlines(95, ymin=0, ymax=100, colors="#FE2A17", linewidth=3.0, zorder=3.0, label="95 RP")
-    plt.hlines(70, xmin=35, xmax=95, colors="#FEBD0D", linewidth=3.0, zorder=2.0, label="70% HP")
-    plt.fill_between([35, 95], 70, 100, color="black", alpha=0.1)
+    def _add_visual_aid(self, thickness: float = 3):
+        pyplot.vlines(
+            self.target_rp_percent,
+            ymin=0,
+            ymax=self._max_hp_percent,
+            colors="#FE2A17",
+            linewidth=thickness,
+            zorder=3,
+            label=f"{self.target_rp_percent} RP",
+        )
+        pyplot.hlines(
+            self.target_hp_percent,
+            xmin=self._min_ds_cost,
+            xmax=self.target_rp_percent,
+            colors="#FEBD0D",
+            linewidth=thickness,
+            zorder=2,
+            label=f"{self.target_hp_percent}% HP",
+        )
+        pyplot.fill_between(
+            [self._min_ds_cost, self.target_rp_percent],
+            self.target_hp_percent,
+            self._max_hp_percent,
+            color="black",
+            alpha=0.1,
+        )
 
-
-def add_title(hp_list: list[float], rp_list: list[float]) -> None:
-    mean_rp = statistics.mean(rp_list)
-    mean_hp = statistics.mean(hp_list)
-    plt.title(f"DS Usage (mean RP: {round(mean_rp)}, mean HP: {round(mean_hp)}%)")
+    def _add_title(self, hp_list: list[float], rp_list: list[float]) -> None:
+        mean_rp = round(statistics.mean(rp_list))
+        mean_hp = round(statistics.mean(hp_list))
+        title = f"DS Usage (mean RP: {mean_rp}, mean HP: {mean_hp}%)"
+        pyplot.title(title)
