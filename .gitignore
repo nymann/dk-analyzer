@@ -1,19 +1,6 @@
-bin
-include
-lib
-lib64
-pyvenv.cfg
 tags
-
-.eggs:
-pytest_runner-5.3.1-py3.9.egg
-README.txt
-
-src/dk_analyzer.egg-info:
-dependency_links.txt
-entry_points.txt
-PKG-INFO
-requires.txt
+.eggs/
+src/dk_analyzer.egg-info/
 src/dk_analyzer/version.py
 __pycache__/
 .coverage
@@ -21,3 +8,5 @@ coverage.xml
 htmlcov
 .cache/
 .env
+build/
+dist/
