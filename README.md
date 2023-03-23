@@ -1,4 +1,8 @@
-# Dk Analyzer
+# Blood DK Analyzer
+
+Generates  a graph of Death Strike Usage
+![image](https://user-images.githubusercontent.com/7005867/227306866-a6ba670c-d6d0-4988-97c1-eb2f3d3db4c6.png)
+
 
 ## How do I install it?
 
