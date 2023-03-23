@@ -34,7 +34,7 @@ class Graph:
         self._add_title(hp_list, rp_list)
         pyplot.show()
 
-    def _add_visual_aid(self, thickness: float = 3):
+    def _add_visual_aid(self, thickness: float = 3) -> None:
         pyplot.vlines(
             self.target_rp_percent,
             ymin=0,
